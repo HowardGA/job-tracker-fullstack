@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  firstName   String
+  lastName    String
+  email    String @unique
+  password  String
+  cvUrl     String?
+  role     Role
+  jobs     Job[]
+  applied   Application[]
+  createdAt   DateTime @default(now())
+}
+
+model Job {
+  id      String  @id @default(uuid())
+  title   String
+  company String
+  location  String
+  type      JobType
+  workplace  WorkplaceType   
+  description   String
+  requirements    String
+  desirable     String?
+  tasks       String?
+  employerId  String
+  employer    User   @relation(fields: [employerId], references: [id])
+  applications    Application[]
+  createdAt   DateTime    @default(now())
+}
+
+model Application {
+  id      String    @id   @default(uuid())
+  jobId   String
+  candidateId   String
+  status  ApplicationStatus
+  coverLetterUrl   String?
+  createdAt   DateTime  @default(now())
+
+  job   Job   @relation(fields: [jobId], references: [id])
+  candidate   User  @relation(fields: [candidateId], references: [id])
+  @@unique([jobId,candidateId])
+}
+
+enum Role {
+  EMPLOYER
+  CANDIDATE
+}
+
+enum ApplicationStatus {
+  APPLIED
+  UNDER_REVIEW
+  SHORT_LISTED
+  NOT_SELECTED
+  INTERVIEWING
+  OFFER_EXTENDED
+  HIRED
+  WITHDRAWN
+}
+
+enum WorkplaceType {
+  ONSITE
+  REMOTE
+  HYBRID
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+  FREELANCE
+}
