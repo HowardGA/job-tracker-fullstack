@@ -38,7 +38,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
             email,
             password
         } = req.body;
-        const {userExists, token} = await loginService(email, password);
+        const {userWithoutPassword, token} = await loginService(email, password);
 
         res.cookie('token', token, {
             httpOnly: true,
@@ -46,7 +46,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
             secure: true
         });
 
-        res.status(201).json(userExists);
+        res.status(201).json(userWithoutPassword);
     } catch (error) {
         next(error);
     }

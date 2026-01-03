@@ -17,6 +17,7 @@ export const authenticate = (
   try {
     const decoded = jwt.verify(token, jwtConfig.secret) as {
         userId: string;
+        name: string;
         role: Role;
     };
 

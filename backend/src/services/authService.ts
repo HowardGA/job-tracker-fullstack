@@ -36,7 +36,7 @@ export const createUser = async (
         email: newUser.email,
         role: newUser.role
      };
-    const token = signToken({userId: newUser.id, role: newUser.role});
+    const token = signToken({userId: newUser.id, name: `${newUser.firstName} ${newUser.lastName}`, role: newUser.role});
     return {userWithoutPassword, token};
 }
 
@@ -47,17 +47,24 @@ export const login = async (
     const userExists = await prisma.user.findFirst({
         where: {
             email
-        }
+        },
     });
 
     if(!userExists){
         throw new Error('Invalid Credentials');
     }
 
+    const userWithoutPassword = {
+        id: userExists.id,
+        name: `${userExists.firstName} ${userExists.lastName}`,
+        email: userExists.email,
+        role: userExists.role
+    }
+
     const isValid = await compare(password, userExists.password);
     if(!isValid) {
         throw new Error('Invalid Credentials');
     }
-    const token = signToken({userId: userExists.id, role: userExists.role});
-    return {userExists, token}
+    const token = signToken({userId: userExists.id, name: `${userExists.firstName} ${userExists.lastName}`, role: userExists.role});
+    return {userWithoutPassword, token}
 }
