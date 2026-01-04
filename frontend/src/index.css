@@ -22,3 +22,12 @@
     background-color: var(--color-neutral-600);
   }
 }
+
+html {
+  @apply custom-scrollbar;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-neutral-600);
+}
