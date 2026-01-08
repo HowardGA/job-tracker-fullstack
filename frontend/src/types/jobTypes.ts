@@ -32,3 +32,7 @@ export type JobResponse = {
     job?: Job
 }
 
+export type JobResponseAll = {
+    job: Job[];
+}
+
