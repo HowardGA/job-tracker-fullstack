@@ -6,7 +6,7 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import CreateVacancy from "../pages/CreateVacancy";
 import Jobs from "../pages/Jobs";
-
+import Profile from "../pages/Profile";
 
 export const router = createBrowserRouter([
     {
@@ -14,7 +14,8 @@ export const router = createBrowserRouter([
         children: [
             { path: '/', element:<Home />},
             { path: '/publish', element: <CreateVacancy />},
-            { path: '/jobs', element: <Jobs />}
+            { path: '/jobs', element: <Jobs />},
+            { path: '/profile', element: <Profile />}
         ]
     },
     {

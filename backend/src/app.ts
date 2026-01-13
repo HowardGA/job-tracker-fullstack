@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes";
 import jobRoutes from './routes/jobRoutes';
+import CVRoutes from './routes/cvRoutes';
+import UserRoutes from './routes/userRoutes';
 
 const app = express();
 app.use(cors({
@@ -16,6 +18,8 @@ app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/job', jobRoutes);
+app.use('/api/cv', CVRoutes);
+app.use('/api/user', UserRoutes);
 
 app.get("/", (_req: Request, res:Response) => {
     res.send("Api is running...")

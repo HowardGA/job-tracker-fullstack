@@ -42,7 +42,7 @@ const Navbar = () => {
                 ) : isAuthenticated ? (
                     <div className="flex items-center gap-4">
                         <div className="hidden sm:block text-right">
-                            <p className="text-sm font-semibold text-white leading-none">{user?.name}</p>
+                            <a className="text-sm font-semibold text-white leading-none" href="/profile">{user?.name}</a>
                             <p className="text-[10px] text-neutral-500 uppercase tracking-widest mt-1">{capitalizeFirsLetter(user?.role ?? '')}</p>
                         </div>
                         <button 
