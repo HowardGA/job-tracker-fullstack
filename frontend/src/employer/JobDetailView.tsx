@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FaLocationDot, FaMapPin, FaBriefcase } from "react-icons/fa6";
 import { useGetSingleJob } from "../queries/job.queries";
 import { capitalizeFirsLetter, replaceUnderscoreWithSpace } from "../utils/Strings";
@@ -5,18 +6,37 @@ import { MdDateRange } from "react-icons/md";
 import { formatDate } from "../utils/Strings";
 import Badge from "../components/Badge";
 import DetailList from "../components/DetailListJob";
+import { useAuth } from "../app/providers/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import CoverLetterModal from "../components/CoverLetterModal";
 
 interface JobDetailViewProps {
-    id: string
+    id: string;
+    applied?: boolean;
 }
 
-const JobDetailView = ({ id }: JobDetailViewProps) => {
+const JobDetailView = ({ id, applied }: JobDetailViewProps) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { data: job, isLoading, isError } = useGetSingleJob(id);
+    const {user} = useAuth();
+    const navigate = useNavigate();
 
     if (isLoading) return <div className="p-10 animate-pulse text-neutral-500">Loading details...</div>;
     if (isError) return <div className="p-10 text-red-400">Error loading details.</div>;
 
     const details = job?.job;
+
+    const handleApplication = () => {
+        if (!user) {
+            navigate('/login');
+            return;
+        }
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     return (
         <section className="w-full h-full bg-neutral-900/40 p-8 overflow-y-auto custom-scrollbar">
@@ -43,11 +63,24 @@ const JobDetailView = ({ id }: JobDetailViewProps) => {
                 <DetailList title="Desired Skills" items={details?.desirable.split('\n')} />
             </div>
 
-            <div className="mt-10 pt-6 border-t border-neutral-800">
-                <button className="px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl transition-all">
+            {user?.role !== "EMPLOYER" || applied && <div className="mt-10 pt-6 border-t border-neutral-800">
+                <button 
+                    className="px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl transition-all"
+                    onClick={handleApplication}
+                >
                     Apply Now
                 </button>
-            </div>
+            </div>}
+
+            {applied && <div className="mt-10 pt-6 border-t border-neutral-800">
+                <button 
+                    className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl transition-all"
+                    onClick={handleApplication}
+                >
+                    Withdraw Application
+                </button>
+            </div>}
+            {isModalOpen && job?.job?.id && <CoverLetterModal jobId={job?.job?.id} onClose={closeModal} isOpen={isModalOpen}/>}
         </section>
     );
 };

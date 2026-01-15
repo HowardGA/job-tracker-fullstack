@@ -46,3 +46,33 @@ export const replaceCV = async (file: Express.Multer.File, userId: string,pathIn
 
     return path;
 }
+
+export const uploadCoverLetter = async (file: Express.Multer.File, userId: string) => {
+    const fileName = `cover-letter-${userId}-${Date.now()}.pdf`;
+    const fullPath = `${folder}/${fileName}`;
+
+    if (file.mimetype !== 'application/pdf') {
+        throw new Error('Only PDF files are allowed');
+    }
+
+    const {data, error} = await supabase.storage
+        .from('portfolio')
+        .upload(fullPath, file.buffer, {
+            contentType: 'appication/pdf',
+            upsert: true
+        });
+
+    if (error) throw error;
+
+    return data.path;
+}
+
+export const getPrivateCLUrl = async (pathInDB: string) => {
+    const {data, error} = await supabase.storage
+        .from('portfolio')
+        .createSignedUrl(pathInDB, 900);
+
+    if (error) throw error;
+
+    return data.signedUrl;
+}

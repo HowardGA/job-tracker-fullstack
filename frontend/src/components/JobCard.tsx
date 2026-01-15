@@ -1,6 +1,8 @@
 import { FaLocationDot } from "react-icons/fa6";
 import { FaMapPin, FaBriefcase } from "react-icons/fa";
 import { capitalizeFirsLetter, numberOfDays, replaceUnderscoreWithSpace} from "../utils/Strings";
+import type { ApplicationStatus } from "../types/applicationTypes";
+import { getStatusStyles } from "../utils/ColorTags";
 
 
 interface JobCardProps {
@@ -12,10 +14,11 @@ interface JobCardProps {
     worktype: string;
     isSelected: boolean;
     jobDate: string;
+    status?: ApplicationStatus;
     onSelected: (id: string) => void;
 }
 
-const JobCard = ({ id, title, company, location, workplace, worktype, isSelected, onSelected, jobDate } : JobCardProps) => {
+const JobCard = ({ id, title, company, location, workplace, worktype, isSelected, onSelected, jobDate, status } : JobCardProps) => {
     return (
         <article 
             onClick={() => onSelected(id)}
@@ -30,9 +33,16 @@ const JobCard = ({ id, title, company, location, workplace, worktype, isSelected
                 <h3 className={`font-bold text-lg ${isSelected ? 'text-sky-400' : 'text-white'}`}>
                     {title}
                 </h3>
+                <div className="flex gap-x-2">
                 <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-bold bg-neutral-800 px-2 py-1 rounded">
-                    {numberOfDays(jobDate)}
+                    {status ? 'Applied ' : ''}{numberOfDays(jobDate)}
                 </span>
+                {status && (
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${getStatusStyles(status)}`}>
+                            {status}
+                        </span>
+                    )}
+                </div>
             </div>
 
             <p className="text-neutral-300 font-medium">{company}</p>

@@ -34,6 +34,16 @@ const Navbar = () => {
                 <Link to="/publish" className="text-sm font-medium text-neutral-400 hover:text-white transition-colors">
                     Post a Vacancy
                 </Link>
+                {user?.role === "EMPLOYER" && (
+                    <Link to="/vacancies" className="text-sm font-medium text-neutral-400 hover:text-white transition-colors">
+                        My Vacancies
+                    </Link>
+                )}
+                {user?.role === "CANDIDATE" && (
+                    <Link to="/my-applications" className="text-sm font-medium text-neutral-400 hover:text-white transition-colors">
+                        My Applications
+                    </Link>
+                )}
             </div>
 
             <div className="flex item-center gap-4">
