@@ -16,6 +16,7 @@ export const router = createBrowserRouter([
             { path: '/publish', element: <CreateVacancy />},
             { path: '/jobs', element: <Jobs />},
             { path: '/my-applications', element: <Jobs myApplications={true} />},
+            { path: '/vacancies', element: <Jobs myJobs={true} />},
             { path: '/profile', element: <Profile />}
         ]
     },

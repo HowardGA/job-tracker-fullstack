@@ -14,3 +14,10 @@ export const getMyApplicationsRequest = (status?: ApplicationStatus) => {
     const statusQuery = status ? `/${status}` : '';
     return api.get(`application/candidate${statusQuery}`);
 }
+
+export const changeStatusRequest = (status: ApplicationStatus, applicationId: string) => {
+    return api.patch(`/application/${applicationId}/status`, { status });
+}
+
+//Make the withdraw here
+

@@ -49,6 +49,7 @@ export const getCandidateApplicationByJob = async (req: Request, res: Response, 
 }
 
 export const getCandidatesApplicationsByjob = async (req: Request, res: Response, next: NextFunction) => {
+    
     try {
         const jobId = req.params.jobId;
 
@@ -62,13 +63,11 @@ export const getCandidatesApplicationsByjob = async (req: Request, res: Response
 
 export const updateApplicationStatus = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const jobId = req.params.jobId;
-        const candidateId = req.params.candidateId;
+        const { id } = req.params; 
         const { status } = req.body;
+        await  changeApplicationStatus(id, status)
 
-        await changeApplicationStatus(candidateId, jobId, status);
-
-        res.status(200).json({ message: 'Application status updated successfully' });
+        res.status(200).json({ message: 'Status updated' });
     } catch (error) {
         next(error);
     }

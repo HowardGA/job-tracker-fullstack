@@ -1,6 +1,5 @@
 import {z} from 'zod';
-
-type JobType = 'FULL_TIME' | 'PART_TIME' | 'CONTRACT' | 'INTERNSHIP' | 'FREELANCE';
+import type { ApplicationForEmployer } from './applicationTypes';
 export const jobTypesArray = ['FULL_TIME', 'PART_TIME', 'CONTRACT', 'INTERNSHIP', 'FREELANCE'];
 export const workplaceArray = ['ONSITE', 'REMOTE', 'HYBRID'];
 
@@ -25,11 +24,20 @@ export type JobFormInput = z.infer<typeof jobSchema>;
 export type Job  = JobFormInput & {
     id: string;
     createdAt: string;
+    _count?: NumberOfApplications;
+    applications: ApplicationForEmployer[];
+    isVisible: boolean;
+}
+
+type NumberOfApplications = {
+    applications: number
 }
 
 export type JobResponse = {
-    message?: string,
-    job?: Job
+    message?: string;
+    job?: Job;
+    jobs?: Job[];
+    totalJobs?: number;
 }
 
 export type JobResponseAll = {

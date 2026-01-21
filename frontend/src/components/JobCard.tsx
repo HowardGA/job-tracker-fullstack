@@ -15,10 +15,11 @@ interface JobCardProps {
     isSelected: boolean;
     jobDate: string;
     status?: ApplicationStatus;
+    numberOfApplications?: number;
     onSelected: (id: string) => void;
 }
 
-const JobCard = ({ id, title, company, location, workplace, worktype, isSelected, onSelected, jobDate, status } : JobCardProps) => {
+const JobCard = ({ id, title, company, location, workplace, worktype, isSelected, onSelected, jobDate, status, numberOfApplications } : JobCardProps) => {
     return (
         <article 
             onClick={() => onSelected(id)}
@@ -35,7 +36,7 @@ const JobCard = ({ id, title, company, location, workplace, worktype, isSelected
                 </h3>
                 <div className="flex gap-x-2">
                 <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-bold bg-neutral-800 px-2 py-1 rounded">
-                    {status ? 'Applied ' : ''}{numberOfDays(jobDate)}
+                    {numberOfApplications ? `Applications: ${numberOfApplications}` : `${status ? 'Applied ' : ''}${numberOfDays(jobDate)}`}
                 </span>
                 {status && (
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${getStatusStyles(status)}`}>

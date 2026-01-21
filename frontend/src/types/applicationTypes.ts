@@ -44,3 +44,18 @@ export const ApplicationScheema = zod.object({
         }, "Max file size is 5MB")
 });
 export type ApplicationFormInput = zod.infer<typeof ApplicationScheema>;
+
+export type ApplicationForEmployer = {
+    id: string,
+    createdAt: string;
+    status: ApplicationStatus;
+    coverLetterUrl?: string;
+    candidate: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        cvUrl: string;
+    };
+}
+
+export const applicationStatusArray = ['APPLIED', 'UNDER_REVIEW', 'SHORT_LISTED', 'NOT_SELECTED', 'INTERVIEWING', 'OFFER_EXTENDED', 'HIRED'];

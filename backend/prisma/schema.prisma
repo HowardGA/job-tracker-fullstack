@@ -38,6 +38,7 @@ model Job {
   desirable     String?
   tasks       String?
   employerId  String
+  isVisible  Boolean   @default(true)
   employer    User   @relation(fields: [employerId], references: [id])
   applications    Application[]
   createdAt   DateTime    @default(now())

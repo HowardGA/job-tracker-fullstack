@@ -50,7 +50,7 @@ export const getAllApplicationsByCandidate = async (candidateId: string, status?
 };
 
 export const getApplicationByCandidateByJob = async (candidateId: string, jobId: string) => {
-    return await prisma.application.findUnique({
+    const applications =  await prisma.application.findUnique({
         where: {
             jobId_candidateId: {
                 candidateId,
@@ -58,6 +58,7 @@ export const getApplicationByCandidateByJob = async (candidateId: string, jobId:
             }
         }
     });
+    return applications
 };
 
 export const getAllApplicationsByJob = async (jobId: string, status?: ApplicationStatus) => {
@@ -80,18 +81,11 @@ export const getAllApplicationsByJob = async (jobId: string, status?: Applicatio
 };
 
 //add a soft delete for the job posting
-export  const changeApplicationStatus = async (candidateId: string, jobId: string, status: ApplicationStatus) => {
-    return await prisma.application.update({
-        where: {
-            jobId_candidateId: {
-                candidateId,
-                jobId
-            }
-        },
-        data: {
-            status
-        }
-    });
+export  const changeApplicationStatus = async (id: string, status: ApplicationStatus) => {
+    return prisma.application.update({
+            where: { id },
+            data: { status }
+        });
 };
 
 

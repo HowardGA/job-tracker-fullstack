@@ -11,11 +11,11 @@ import {
 
 const router = Router();
 
-router.post('/:jobId', authenticate, submitApplication);
 router.get('/candidate/:status?', authenticate, getCandidateApplications);
 router.get('/candidate/single/:jobId', authenticate, getCandidateApplicationByJob);
 router.get('/employer/:jobId', authenticate, getCandidatesApplicationsByjob);
-router.patch('/changeStatus/:candidateId/:jobId', authenticate, updateApplicationStatus);
+router.post('/:jobId', authenticate, submitApplication);
+router.patch('/:id/status', authenticate, updateApplicationStatus);
 router.delete('/withdraw/:jobId', authenticate, withdraw);
 
 export default router;
